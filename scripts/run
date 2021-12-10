@@ -33,12 +33,20 @@ _service_grafana() {
 	GRAFANA_DIR=$ASDF/grafana/$GRAFANA_VERSION
 	exec $GRAFANA_DIR/bin/grafana-server -config $SITE_ROOT/etc/grafana/stat.ini -homepath $GRAFANA_DIR
 }
-_service_prometheus() {
+_service_prometheus_node() {
 	SITE_ROOT=$1
-	mkdir -p $SITE_ROOT/data/prometheus
+	mkdir -p $SITE_ROOT/data/prometheus_node
 	ASDF=$SITE_ROOT/bin/.asdf/installs
 	PROMETHEUS_DIR=$ASDF/prometheus/$PROMETHEUS_VERSION
-	exec $PROMETHEUS_DIR/bin/prometheus --web.enable-admin-api --config.file=$SITE_ROOT/etc/prometheus/stat.yml --web.listen-address="127.0.0.1:44449" --web.external-url http://127.0.0.1:44449/__internal_prometheus --web.enable-lifecycle --storage.tsdb.path $SITE_ROOT/data/prometheus
+	exec $PROMETHEUS_DIR/bin/prometheus --web.enable-admin-api --config.file=$SITE_ROOT/etc/prometheus/stat_node.yml --web.listen-address="127.0.0.1:44448" --web.external-url http://127.0.0.1:44448/__internal_prometheus --web.enable-lifecycle --storage.tsdb.path $SITE_ROOT/data/prometheus_node
+}
+
+_service_prometheus_gw() {
+	SITE_ROOT=$1
+	mkdir -p $SITE_ROOT/data/prometheus_gw
+	ASDF=$SITE_ROOT/bin/.asdf/installs
+	PROMETHEUS_DIR=$ASDF/prometheus/$PROMETHEUS_VERSION
+	exec $PROMETHEUS_DIR/bin/prometheus --web.enable-admin-api --config.file=$SITE_ROOT/etc/prometheus/stat_gw.yml --web.listen-address="127.0.0.1:44449" --web.external-url http://127.0.0.1:44449/__internal_prometheus --web.enable-lifecycle --storage.tsdb.path $SITE_ROOT/data/prometheus_gw
 }
 
 _git_config() {
